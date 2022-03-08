@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "scanner.h"
+#include "ip.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -10,6 +12,7 @@ QT_END_NAMESPACE
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+
 
 public:
     MainWindow(QWidget *parent = nullptr);
@@ -22,5 +25,6 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    void writeOut(ScannerResult res);
 };
 #endif // MAINWINDOW_H

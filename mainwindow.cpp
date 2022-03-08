@@ -3,7 +3,7 @@
 #include <QTextStream>
 #include <QTcpSocket>
 #include <QString>
-
+#include "scanner.h"
 #include "ip.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -24,7 +24,6 @@ void MainWindow::on_actionquit_triggered()
     this->close();
 }
 
-
 void MainWindow::on_scanStart_clicked()
 {
     QTextStream qout(stdout);
@@ -38,12 +37,18 @@ void MainWindow::on_scanStart_clicked()
     quint16 portEnd = ui->portEnd->text().toUInt();
     ui->output->moveCursor(QTextCursor::Start);
     // basic scan
-    for (quint16 p = portStart; p <= portEnd; ++p) {
-        QTcpSocket sock;
-        sock.connectToHost(ipStart.toString(), p);
-        if (!sock.waitForConnected(3)) qout << sock.errorString();
-        else ui->output->textCursor().insertText("port " + QString::number(p) + " open" + "\n");
+//    for (quint16 p = portStart; p <= portEnd; ++p) {
+//        QTcpSocket sock;
+//        sock.connectToHost(ipStart.toString(), p);
+//        if (!sock.waitForConnected(3)) qout << sock.errorString();
+//        else ui->output->textCursor().insertText("port " + QString::number(p) + " open" + "\n");
 
+//    }
+    Scanner s;
+    s.start(ipStart, portStart, ipEnd, portEnd);
+    s.result.waitForFinished();
+    for (auto item : s.result.results()) {
+        writeOut(item);
     }
 
 //    QTcpSocket sock;
@@ -57,6 +62,28 @@ void MainWindow::on_scanStart_clicked()
 //        sock.waitForBytesWritten();
 //    }
 
+
+}
+
+void MainWindow::writeOut(ScannerResult res)
+{
+    qDebug() << res.addr.ip.toString() + " "<< res.addr.port << " " << res.isOpen << "\n";
+    if (res.isOpen) {
+        ui->output->textCursor().insertText("ip "
+                                            + res.addr.ip.toString()
+                                            + " port "
+                                            + QString::number(res.addr.port)
+                                            + " open "
+                                            + res.msg
+                                            + "\n");
+
+    } else {
+        qDebug() << "ip " + res.addr.ip.toString()
+                    +  " port "
+                    + QString::number(res.addr.port)
+                    + " close "
+                    + res.msg + "\n";
+    }
 
 }
 

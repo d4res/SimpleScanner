@@ -56,3 +56,14 @@ IP &IP::operator++() {
     ++ip;
     return *this;
 }
+
+bool operator<(const IP &lip, const IP &rip)
+{
+    return lip.ip < rip.ip;
+}
+
+bool operator<=(const IP &lip, const IP &rip)
+{
+    return lip.ip <= rip.ip;
+}
+
