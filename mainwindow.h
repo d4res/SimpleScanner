@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include "scanner.h"
 #include "ip.h"
+#include <QFutureWatcher>
+#include <QFuture>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,10 +19,11 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    QFutureWatcher<ScannerResult> watcher;
 
 private slots:
     void on_actionquit_triggered();
-
+    void resultReady(int index);
     void on_scanStart_clicked();
 
 private:

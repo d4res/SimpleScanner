@@ -1,7 +1,7 @@
 #include "scanner.h"
 #include <QTcpSocket>
 
-ScannerResult Scanner::scan(Address addr)
+ScannerResult Scanner::scan(const Address addr)
 {
     IP ip = addr.ip;
     IP::port port = addr.port;
@@ -35,8 +35,6 @@ void Scanner::start(IP ipStart, IP::port portStart, IP ipEnd, IP::port portEnd)
     for (IP ip = ipStart; ip <= ipEnd; ++ip) {
         for (IP::port port = portStart; port <= portEnd; ++port) {
             Address addr = {ip, port};
-//            addr.ip = ip;
-//            addr.port = port;
             list.append(addr);
         }
     }

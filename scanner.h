@@ -14,17 +14,19 @@ struct ScannerResult {
 };
 
 
-class Scanner
+class Scanner: public QObject
 {
+    Q_OBJECT
 private:
-    static ScannerResult scan(Address addr);
+     static ScannerResult scan(const Address addr);
 
 
 public:
     QFuture<ScannerResult> result;
-    bool started;
     Scanner();
     void start(IP ipStart, IP::port portStart, IP ipEnd, IP::port portEnd);
+
+
 };
 
 
