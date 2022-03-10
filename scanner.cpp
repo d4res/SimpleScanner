@@ -38,5 +38,5 @@ void Scanner::start(IP ipStart, IP::port portStart, IP ipEnd, IP::port portEnd)
             list.append(addr);
         }
     }
-    result =  QtConcurrent::mapped(list, Scanner::scan);
+    result =  QtConcurrent::mapped(QThreadPool::globalInstance(),list, Scanner::scan);
 }

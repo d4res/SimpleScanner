@@ -54,14 +54,21 @@ void MainWindow::on_scanStart_clicked()
     quint16 portStart = ui->portStart->text().toUInt();
     quint16 portEnd = ui->portEnd->text().toUInt();
     ui->output->moveCursor(QTextCursor::Start);
-
+    int maxThreadCount = ui->threadNum->text().toInt();
+    maxThreadCount = maxThreadCount ? maxThreadCount : QThread::idealThreadCount();
     Scanner s;
-
+    QThreadPool::globalInstance()->setMaxThreadCount(maxThreadCount);
     s.start(ipStart, portStart, ipEnd, portEnd);
     watcher.setFuture(s.result);
+
     QObject::connect(&watcher, SIGNAL(resultReadyAt(int)), this, SLOT(resultReady(int)), Qt::UniqueConnection);
 
 
+}
 
+
+void MainWindow::on_scanEnd_clicked()
+{
+    watcher.future().cancel();
 }
 

@@ -26,6 +26,8 @@ private slots:
     void resultReady(int index);
     void on_scanStart_clicked();
 
+    void on_scanEnd_clicked();
+
 private:
     Ui::MainWindow *ui;
     void writeOut(ScannerResult res);
